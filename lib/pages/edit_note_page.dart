@@ -8,7 +8,6 @@ class EditNotePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF2F2F2F),
       appBar:appBarWidget(title: 'Edit Note', icon: Icon(Icons.check),),
       body: Padding(
         padding : EdgeInsets.all(16),
