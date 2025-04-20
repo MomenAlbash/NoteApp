@@ -15,7 +15,6 @@ class appBarWidget extends StatelessWidget implements PreferredSizeWidget{
         title,
         style: TextStyle(fontSize: 24),
       ),
-      backgroundColor: Colors.transparent,
       elevation: 0,
       actions: [
         Padding(
