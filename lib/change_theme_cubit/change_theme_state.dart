@@ -4,6 +4,8 @@ part of 'change_theme_cubit.dart';
 abstract class ChangeThemeState {}
 
 
-class DarkThemeState extends ChangeThemeState{}
+class ChangeModeState extends ChangeThemeState{}
 
-class LightThemeState extends ChangeThemeState{}
+
+class IntialState extends ChangeThemeState{}
+

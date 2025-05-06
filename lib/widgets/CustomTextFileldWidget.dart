@@ -1,67 +1,60 @@
-
-
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:noteapp/constants.dart';
 
 class CustomTextField extends StatelessWidget {
-  CustomTextField({
-    this.minLines,this.maxLines,
+  const CustomTextField({
+    super.key,
+    this.minLines,
+    this.maxLines,
     required this.labelColor,
-    required this.borderColor,
+    this.borderColor,
     this.textInputType,
-    this.onchange, required this.hintText,
+    this.onChanged,
+    required this.hintText,
     required this.labelText,
-    this.controller
-  }) ;
+    this.controller, this.onSaved,
+  });
+
   final String hintText;
   final String labelText;
   final TextInputType? textInputType;
-  Function(String)? onchange;
-  final Color borderColor;
+  final ValueChanged<String>? onChanged;
+  final Color? borderColor;
   final Color labelColor;
   final int? minLines;
   final int? maxLines;
   final TextEditingController? controller;
+  final void Function(String?)? onSaved;
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return TextFormField(
-
-      validator: (value) {
-        if(value==null||value.isEmpty){
-          return 'This Field is required';
-        }else{
-          return null;
-        }
-      },
+      onSaved: onSaved,
+      controller: controller,
+      validator: (value) => value?.isEmpty ?? true ? 'This Field is required' : null,
       minLines: minLines,
       maxLines: maxLines,
       keyboardType: textInputType,
-      onChanged: onchange,
+      onChanged: onChanged,
+      cursorColor: kprimaryColor,
       decoration: InputDecoration(
         hintText: hintText,
         labelText: labelText,
-        hintStyle: const TextStyle(color: Colors.grey),
+        hintStyle: TextStyle(color: Colors.grey.shade500),
         labelStyle: TextStyle(color: labelColor),
-        enabled: true,
-        focusedBorder :OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(
-            color: Colors.grey,
-          ),
-        ),
-        errorBorder:OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(
-            color: Colors.grey,
-          ),
-        ) ,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: Colors.grey,
-          ),
-        ),
+        border: _buildBorder(borderColor ?? (isDarkMode ? Colors.white70 : Colors.black54)),
+        enabledBorder: _buildBorder(borderColor ?? (isDarkMode ? Colors.white70 : Colors.black54)),
+        focusedBorder: _buildBorder(kprimaryColor),
+      ),
+    );
+  }
+
+  OutlineInputBorder _buildBorder(Color color) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: BorderSide(
+        color: color,
+        width: 1.5,
       ),
     );
   }

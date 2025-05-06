@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:noteapp/Models/note_model.dart';
 import 'package:noteapp/change_theme_cubit/change_theme_cubit.dart';
+import 'package:noteapp/constants.dart';
 import 'package:noteapp/pages/edit_note_page.dart';
 import 'package:noteapp/pages/homePage.dart';
 import 'package:hive_flutter/hive_flutter.dart'; // استخدم هذه
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:noteapp/widgets/themeModeWigets.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,13 +13,10 @@ void main() async {
   // تهيئة Hive
   await Hive.initFlutter();
 
-  // تسجيل المهايئ (Adapter)
-  Hive.registerAdapter(NoteAdapter());
+  await Hive.openBox(kNotesBox);
 
-  // فتح صندوق الملاحظات
-  await Hive.openBox<Note>('notes');
-  // test Branch
-  runApp(NoteApp());
+
+  runApp(const NoteApp());
 }
 
 class NoteApp extends StatelessWidget {
@@ -31,26 +29,19 @@ class NoteApp extends StatelessWidget {
       child: BlocBuilder<ChangeThemeCubit, ChangeThemeState>(
         builder: (context, state) {
           return MaterialApp(
-              routes: {
-                homePage.id: (context) => homePage(),
-                EditNotePage.id: (context) => EditNotePage()
-              },
-              initialRoute: homePage.id,
-              theme: _getThemeData(state),
+            routes: {
+              homePage.id: (context) => homePage(),
+              EditNotePage.id: (context) => EditNotePage()
+            },
+            debugShowCheckedModeBanner: false,
+            darkTheme: DarkThemeMode(),
+            theme: LigthThemeMode(),
+            themeMode: ChangeThemeCubit.get(context).isDark?ThemeMode.dark:ThemeMode.light,
+            initialRoute: homePage.id,
           );
         },
       ),
     );
-  }
-
-  ThemeData _getThemeData(ChangeThemeState state) {
-    if (state is DarkThemeState) {
-      return ThemeData.dark();
-    } else if (state is LightThemeState) {
-      return ThemeData.light();
-    } else {
-      return ThemeData.light(); // Default theme
-    }
   }
 
 

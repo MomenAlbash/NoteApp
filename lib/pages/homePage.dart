@@ -4,10 +4,12 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:noteapp/Models/note_model.dart';
 import 'package:noteapp/change_theme_cubit/change_theme_cubit.dart';
+import 'package:noteapp/widgets/AddNoteButtomSheet.dart';
 import 'package:noteapp/widgets/CustomMaterialWidgets.dart';
 import 'package:noteapp/widgets/CustomTextFileldWidget.dart';
+import 'package:noteapp/widgets/notes_list_view.dart';
 
-import '../widgets/ButtomSheetBody.dart';
+import '../widgets/AddNoteForm.dart';
 import '../widgets/CustomConatainerWidgets.dart';
 import '../widgets/appBarWidgetr.dart';
 
@@ -18,68 +20,25 @@ class homePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChangeThemeCubit, ChangeThemeState>(
-      builder: (context, state) {
-        final isLight = state is LightThemeState;
-        return Scaffold(
-          appBar: appBarWidget(
-            title: 'Notes',
-            icon: Icon(Icons.search),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              ShowModelButtomSheet(context);
-            },
-            backgroundColor: Colors.lightBlueAccent,
-            child: Icon(Icons.add),
-          ),
-          drawer: Drawer(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 50,
-                ),
-                Switch(value: isLight, onChanged: (val) {
-                  var GetWeatherCubit = BlocProvider.of<ChangeThemeCubit>(
-                      context);
-                  GetWeatherCubit.getThemeApp(isLigth: val);
-                }),
-              ],
+    return Scaffold(
+      appBar: appBarWidget(
+        title: 'Notes',
+        icon: Icon(Icons.search),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
             ),
-          ),
-          body: ValueListenableBuilder(
-              valueListenable: Hive.box<Note>('notes').listenable(),
-              builder: (context, Box<Note> box, _) {
-                if (box.isEmpty) {
-                  return Center(child: Text('لا توجد ملاحظات'));
-                }
-                return ListView.builder(
-                  itemCount: box.length,
-                  itemBuilder: (context, index) {
-                    return CustomContainerWidget();
-                  },
-                );
-              }),
-        );
-      },
-    );
-  }
-
-  void ShowModelButtomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          height: 400,
-          child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Form(
-                  child: ButtomSheetBody(),
-                ),
-              )),
-        );
-      },
+            context: context,
+            builder: (context) => const AddNoteButtomSheet(),
+          );
+        },
+        backgroundColor: Colors.lightBlueAccent,
+        child: Icon(Icons.add),
+      ),
+      body: NotesListView(),
     );
   }
 }
