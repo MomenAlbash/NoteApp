@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:noteapp/Models/note_model.dart';
 import 'package:noteapp/constants.dart';
+import 'package:noteapp/cubits/add_note_cubit/add_note_cubit.dart';
 import 'package:noteapp/widgets/CustomTextFileldWidget.dart';
 
 import 'CustomMaterialWidgets.dart';
@@ -52,6 +52,8 @@ class _AddNoteFormState extends State<AddNoteForm> {
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
+                NoteModel noteModel= NoteModel(Color: 1, date: DateTime.now().toString(), title: title!, subtitle: subtile!);
+                AddNoteCubit.get(context).addNote(noteModel);
               } else {
                 autovalidateMode = AutovalidateMode.always;
               }

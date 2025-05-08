@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:noteapp/change_theme_cubit/change_theme_cubit.dart';
 
 part 'change_theme_state.dart';
 

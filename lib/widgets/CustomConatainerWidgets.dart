@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:noteapp/Models/note_model.dart';
 import 'package:noteapp/pages/edit_note_page.dart';
 
 class CustomContainerWidget extends StatelessWidget {

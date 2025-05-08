@@ -1,3 +1,6 @@
+import 'dart:ui';
+import 'dart:ui';
+
 import 'package:hive/hive.dart';
 part 'note_model.g.dart';
 
